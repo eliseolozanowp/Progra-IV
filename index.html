@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Introduccion a JS</title>
+    <title>App de Productos</title>
 
     <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
@@ -11,15 +11,49 @@
     <div class="container-fluid">
          <div id="app">
             <div class="row">
-                <div class="col">
-                    <h1>Bienvenidos a Progra IV</h1>
-                </div>
+                <div class="col">::.. SISTEMA DE FACTURACION ..::</div>
             </div>
             <div class="row">
-                <div class="col col-md-2"><label for="txtnombre">Nombre:</label></div>
-                <div class="col col-md-3">
-                    <input class="form-control" type="text" id="txtnombre" v-model="nombre">
-                    Hola que tal {{nombre}}
+                <div class="col col-md-6">
+                    <div class="row p-1">
+                        <div class="col col-md-2">CODIGO</div>
+                        <div class="col col-md-3">
+                            <input v-model="producto.codigo" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col col-md-2">NOMBRE</div>
+                        <div class="col col-md-5">
+                            <input v-model="producto.nombre" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col col-md-2">MARCA</div>
+                        <div class="col col-md-5">
+                            <input v-model="producto.marca" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col col-md-2">PRESENTACION</div>
+                        <div class="col col-md-3">
+                            <input v-model="producto.presentacion" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col col-md-2">PRECIO</div>
+                        <div class="col col-md-3">
+                            <input v-model="producto.precio" type="number" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col">
+                            <button @click.prevent.default="guardarProducto" class="btn btn-success">GUARDAR</button>
+                            <button @click.prevent.default="nuevoProducto" class="btn btn-warning">NUEVO</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-6">
+
                 </div>
             </div>
         </div>
@@ -30,8 +64,21 @@
         var app = new Vue({
             el: '#app',
             data:{
-                nombre: '',
-                saludo: 'Hola mundo con Vue.js'
+                producto:{
+                    codigo: '',
+                    nombre: '',
+                    marca: '',
+                    presentacion: '',
+                    precio: 0.0
+                }
+            },
+            methods:{
+                guardarProducto(){
+                    // Almacenamiento del objeto productos en localStorage
+                    let productos = localStorage.getItem('productos') || [];
+                    productos.push(this.producto);
+                    localStorage.setItem('productos', JSON.stringify(productos));
+                }
             }
         })
     </script>
