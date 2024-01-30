@@ -94,6 +94,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+    <script src="db.js"></script>
     <script>
         var app = new Vue({
             el: '#app',
@@ -128,22 +129,15 @@
                     this.producto = producto;
                 },
                 guardarProducto() {
-                    //almacenamiento del objeto productos en localStorage
-                    if (this.accion == 'nuevo') {
-                        this.valor = this.producto.codigo;
-                        this.listarProductos();
-                        if (this.productos.length > 0) {
-                            alert("Código repetido");
-                            return;
-                        }
-                        this.productos.push(this.producto);
-                    } else if (this.accion == "modificar") {
-                        let buscar = this.productos.findIndex(producto => producto.idProducto == this.producto
-                            .idProducto);
-                        this.productos[buscar] = this.producto;
-                    }
-                    localStorage.setItem('productos', JSON.stringify(this.productos));
-                    this.nuevoProducto();
+                    //almacenamiento del objeto productos en indexedDB
+                    let store = abrirStore('productos', 'readwrite');
+                        query = store.put({...this.producto});
+                    query.onsuccess = e=>{
+                        this.nuevoProducto();
+                    };
+                    query.onerror = e=>{
+                        console.error('Error al guardar en productos', e.message());
+                    };
                 },
                 nuevoProducto() {
                     this.accion = 'nuevo';
@@ -157,15 +151,19 @@
                     }
                 },
                 listarProductos() {
-                    this.productos = JSON.parse(localStorage.getItem('productos') || "[]").filter(producto =>
-                        producto.codigo.includes(this.valor) || producto.nombre.toLowerCase().includes(this
-                            .valor.toLowerCase()) || producto.marca.toLowerCase().includes(this.valor
-                            .toLowerCase()) || producto.presentacion.toLowerCase().includes(this.valor
-                            .toLowerCase()));
+                    let store = abrirStore('productos','readonly'),
+                        data = store.getAll();
+                    data.onsuccess = e => {
+                        this.productos = data.result
+                        .filter(producto =>producto.codigo.includes(this.valor) || 
+                        producto.nombre.toLowerCase().includes(this.valor.toLowerCase()) || 
+                        producto.marca.toLowerCase().includes(this.valor.toLowerCase()) || 
+                        producto.presentacion.toLowerCase().includes(this.valor.toLowerCase()));
+                    };
                 }
             },
             created() {
-                this.listarProductos();
+                //this.listarProductos();
             }
         })
     </script>
