@@ -3,9 +3,9 @@ const funcdb = ()=>{
     let indexDB = indexedDB.open('db_sistema',1);
     indexDB.onupgradeneeded = e=>{
         let req = e.target.result,
-            tblproducto = req.createObjectStore('productos',{keyPath: 'idProducto'});
-        tblproducto.createIndex('idProducto', 'idProducto', {unique:true});
-        tblproducto.createIndex('codigo', 'codigo', {unique:true});
+            tblproducto = req.createObjectStore('productos',{keyPath:'idProducto'});
+        tblproducto.createIndex('idProducto','idProducto',{unique:true});
+        tblproducto.createIndex('codigo','codigo',{unique:true});
     };
     indexDB.onsuccess = e=>{
         db = e.target.result;
