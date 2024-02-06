@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App de Productos</title>
+    <title>App de alumnos</title>
 
     <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
@@ -11,73 +11,77 @@
     <div class="container-fluid">
         <div id="app">
             <div class="row">
-                <div class="col">::.. SISTEMA DE FACTURACION .::</div>
+                <div class="col">::.. SISTEMA ACADEMICO .::</div>
             </div>
             <div class="row">
                 <div class="col col-md-4">
                     <div class="row p-1">
                         <div class="col col-md-4">CODIGO</div>
                         <div class="col col-md-4">
-                            <input v-model="producto.codigo" type="text" class="form-control">
+                            <input v-model="alumno.codigo" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="row p-1">
                         <div class="col col-md-4">NOMBRE</div>
                         <div class="col col-md-6">
-                            <input v-model="producto.nombre" type="text" class="form-control">
+                            <input v-model="alumno.nombre" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="row p-1">
                         <div class="col col-md-4">DIRECCION</div>
                         <div class="col col-md-6">
-                            <input v-model="producto.direccion" type="text" class="form-control">
+                            <input v-model="alumno.direccion" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="row p-1">
                         <div class="col col-md-4">MUNICIPIO</div>
                         <div class="col col-md-6">
-                            <input v-model="producto.municipio" type="text" class="form-control">
+                            <input v-model="alumno.municipio" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="row p-1">
                         <div class="col col-md-4">DEPARTAMENTO</div>
                         <div class="col col-md-6">
-                            <input v-model="producto.departamento" type="text" class="form-control">
+                            <input v-model="alumno.departamento" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="row p-1">
                         <div class="col col-md-4">TELEFONO</div>
                         <div class="col col-md-6">
-                            <input v-model="producto.telefono" type="text" class="form-control">
+                            <input v-model="alumno.telefono" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="row p-1">
                         <div class="col col-md-4">FECHA DE NACIMIENTO</div>
                         <div class="col col-md-6">
-                            <input v-model="producto.fechan" type="date" class="form-control">
+                            <input v-model="alumno.fechan" type="date" class="form-control">
                         </div>
                     </div>
                     <div class="row p-1">
                         <div class="col col-md-4">SEXO</div>
                         <div class="col col-md-5">
-                            <input v-model="producto.sexo" type="text" class="form-control">
+                            <select v-model="alumno.sexo" name="sexo" id="sexo" class="form-control">
+                                <option value="Masculino">Masculino</option>
+                                <option value="Femenino">Femenino</option>
+                            </select>
+                            <!-- <input v-model="alumno.sexo" type="text" class="form-control"> -->
                         </div>
                     </div>
                     <div class="row p-1">
                         <div class="col">
-                            <button @click.prevent.default="guardarProducto" class="btn btn-success">GUARDAR</button>
-                            <button @click.prevent.default="nuevoProducto" class="btn btn-warning">NUEVO</button>
+                            <button @click.prevent.default="guardarAlumno" class="btn btn-success">GUARDAR</button>
+                            <button @click.prevent.default="nuevoAlumno" class="btn btn-warning">NUEVO</button>
                         </div>
                     </div>
                 </div>
                 <div class="col col-md-6">
-                    <form id="frmProducto">
+                    <form id="frmalumno">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>BUSCAR</th>
                                     <th colspan="5">
-                                        <input stype="search" v-model="valor" @keyup="buscarProducto" class="form-control">
+                                        <input stype="search" v-model="valor" @keyup="buscarAlumno" class="form-control">
                                     </th>
                                 </tr>
                                 <tr>
@@ -93,16 +97,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr @click="modificarProducto(producto)" v-for="producto in productos" :key="producto.idProducto">
-                                    <td>{{producto.codigo}}</td>
-                                    <td>{{producto.nombre}}</td>
-                                    <td>{{producto.direccion}}</td>
-                                    <td>{{producto.municipio}}</td>
-                                    <td>{{producto.departamento}}</td>
-                                    <td>{{producto.telefono}}</td>
-                                    <td>{{producto.fechan}}</td>
-                                    <td>{{producto.sexo}}</td>
-                                    <td><button @click.prevent.default="eliminarProducto(producto.idProducto)" class="btn btn-danger">del</button></td>
+                                <tr @click="modificarAlumno(alumno)" v-for="alumno in alumnos" :key="alumno.idAlumno">
+                                    <td>{{alumno.codigo}}</td>
+                                    <td>{{alumno.nombre}}</td>
+                                    <td>{{alumno.direccion}}</td>
+                                    <td>{{alumno.municipio}}</td>
+                                    <td>{{alumno.departamento}}</td>
+                                    <td>{{alumno.telefono}}</td>
+                                    <td>{{alumno.fechan}}</td>
+                                    <td>{{alumno.sexo}}</td>
+                                    <td><button @click.prevent.default="eliminarAlumno(alumno.idAlumno)" class="btn btn-danger">del</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -119,10 +123,10 @@
             el: '#app',
             data:{
                 valor:'',
-                productos:[],
+                alumnos:[],
                 accion:'nuevo',
-                producto:{
-                    idProducto: new Date().getTime(),
+                alumno:{
+                    idAlumno: new Date().getTime(),
                     codigo:'',
                     nombre:'',
                     direccion:'',
@@ -134,37 +138,39 @@
                 }
             },
             methods:{
-                buscarProducto(e){
-                    this.listarProductos();
+                buscarAlumno(e){
+                    this.listarAlumnos();
                 },
-                eliminarProducto(idProducto){
-                    if( confirm(`Esta seguro de elimina el producto?`) ){
-                        let store = abrirStore('productos', 'readwrite'),
-                        query = store.delete(idProducto);
+                eliminarAlumno(idAlumno){
+                    if( confirm(`Esta seguro de elimina el estudiante?`) ){
+                        let store = abrirStore('alumnos', 'readwrite'),
+                        query = store.delete(idAlumno);
                     query.onsuccess = e=>{
-                        this.nuevoProducto();
+                        this.nuevoAlumno();
+                        this.listarAlumnos();
                     };
                     }
                 },
-                modificarProducto(producto){
+                modificarAlumno(alumno){
                     this.accion = 'modificar';
-                    this.producto = producto;
+                    this.alumno = alumno;
                 },
-                guardarProducto(){
-                    //almacenamiento del objeto productos en indexedDB
-                    let store = abrirStore('productos', 'readwrite'),
-                        query = store.put({...this.producto});
+                guardarAlumno(){
+                    //almacenamiento del objeto alumnos en indexedDB
+                    let store = abrirStore('alumnos', 'readwrite'),
+                        query = store.put({...this.alumno});
                     query.onsuccess = e=>{
-                        this.nuevoProducto();
+                        this.nuevoAlumno();
+                        this.listarAlumnos();
                     };
                     query.onerror = e=>{
-                        console.error('Error al guardar en productos', e.message());
+                        console.error('Error al guardar en alumnos', e.message());
                     };
                 },
-                nuevoProducto(){
+                nuevoAlumno(){
                     this.accion = 'nuevo';
-                    this.producto = {
-                        idProducto: new Date().getTime(),
+                    this.alumno = {
+                        idAlumno: new Date().getTime(),
                         codigo:'',
                         nombre:'',
                         direccion:'',
@@ -175,20 +181,24 @@
                         sexo: ''
                     }
                 },
-                listarProductos(){
-                    let store = abrirStore('productos', 'readonly'),
+                listarAlumnos(){
+                    let store = abrirStore('alumnos', 'readonly'),
                         data = store.getAll();
                     data.onsuccess = resp=>{
-                        this.productos = data.result
-                            .filter(producto=>producto.codigo.includes(this.valor) || 
-                            producto.nombre.toLowerCase().includes(this.valor.toLowerCase()) || 
-                            producto.marca.toLowerCase().includes(this.valor.toLowerCase()) || 
-                            producto.presentacion.toLowerCase().includes(this.valor.toLowerCase()));
+                        this.alumnos = data.result
+                            .filter(alumno=>alumno.codigo.includes(this.valor) || 
+                            alumno.nombre.toLowerCase().includes(this.valor.toLowerCase()) || 
+                            alumno.direccion.toLowerCase().includes(this.valor.toLowerCase()) || 
+                            alumno.municipio.toLowerCase().includes(this.valor.toLowerCase()) || 
+                            alumno.departamento.toLowerCase().includes(this.valor.toLowerCase()) || 
+                            alumno.telefono.toLowerCase().includes(this.valor.toLowerCase()) || 
+                            alumno.fechan.toLowerCase().includes(this.valor.toLowerCase()) || 
+                            alumno.sexo.toLowerCase().includes(this.valor.toLowerCase()));
                     };
                 }
             },
             created(){
-                //this.listarProductos();
+                //this.listaralumnos();
             }
         })
     </script>
