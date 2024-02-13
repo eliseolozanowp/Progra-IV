@@ -16,7 +16,8 @@ Vue.component('componente-productos', {
                 nombre:'',
                 marca:'',
                 presentacion:'',
-                precio:0.0
+                precio:0.0,
+                foto:'',
             }
         }
     },
@@ -39,7 +40,12 @@ Vue.component('componente-productos', {
             this.producto = producto;
         },
         guardarProducto(){
-            //almacenamiento del objeto productos en indexedDB
+            //almacenamiento del objeto productos en indexedD
+            if (this.producto.categoria.id=='' ||
+                this.producto.categoria.label=='' ) {
+                    console.error("Por favor seleccione una categoria");
+                    return;
+            }
             let store = abrirStore('productos', 'readwrite'),
                 query = store.put({...this.producto});
             query.onsuccess = e=>{
@@ -127,6 +133,17 @@ Vue.component('componente-productos', {
                             <div class="col col-md-2">PRECIO</div>
                             <div class="col col-md-3">
                                 <input v-model="producto.precio" type="number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row p-1">
+                            <div class="col col-md-2">
+                                <img :src="productos.foto" width="50"/>
+                            </div>
+                            <div class="col col-md-4>
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Seleccione la foto</label>
+                                    <input class="form-control" type="file" id="formFile" accept="image/" onChange="seleccionarFoto(this)">
+                                </div>
                             </div>
                         </div>
                         <div class="row p-1">
