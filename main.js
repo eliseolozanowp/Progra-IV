@@ -2,9 +2,8 @@ var app = new Vue({
     el: '#app',
     data:{
         forms:{
-            producto:{mostrar:false},
-            categoria:{mostrar:false},
-            cliente:{mostrar:false},
+            autor:{mostrar:false},
+            libro:{mostrar:false},
         }
     },
     methods:{
@@ -14,14 +13,14 @@ var app = new Vue({
         }
     }
 });
-async function seleccionarFoto(imagen){
-    let archivo = imagen.files[0];
-    if(archivo){
-        let blob = await img(archivo, 1),
-            reader = new FileReader();
-        reader.onload = e=>{
-            app.$refs.producto.producto.foto= e.target.result;
-        };
-        reader.readAsDataURL(blob);
-    }
-}
+// async function seleccionarFoto(imagen){
+//     let archivo = imagen.files[0];
+//     if(archivo){
+//         let blob = await img(archivo, 1),
+//             reader = new FileReader();
+//         reader.onload = e=>{
+//             app.$refs.producto.producto.foto= e.target.result;
+//         };
+//         reader.readAsDataURL(blob);
+//     }
+// }

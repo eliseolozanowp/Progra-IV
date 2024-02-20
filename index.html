@@ -11,33 +11,29 @@
     <div class="container-fluid" id="app">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand">::.. SISTEMA DE FACTURACION ..::</a>
+                <a class="navbar-brand">::.. SISTEMA DE LIBROS ..::</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a class="nav-link" @click="abrirFormulario('categoria')">Categoria</a>
-                        <a class="nav-link" @click="abrirFormulario('producto')">Productos</a>
-                        <a class="nav-link" @click="abrirFormulario('cliente')">Cliente</a>
+                        <a class="nav-link" @click="abrirFormulario('autor')">Autor</a>
+                        <a class="nav-link" @click="abrirFormulario('libro')">Libro</a>
                     </div>
                 </div>
             </div>
         </nav>
         <div id="appSistema">
-            <componente-categorias ref="categoria" v-show="forms['categoria'].mostrar"></componente-categorias>
-            <componente-productos ref="producto" v-show="forms['producto'].mostrar"></componente-productos>
-            <componente-clientes ref="cliente" v-show="forms['cliente'].mostrar"></componente-clientes>
+            <componente-autores ref="autor" v-show="forms['autor'].mostrar"></componente-autores>
+            <componente-libros ref="libro" v-show="forms['libro'].mostrar"></componente-libros>
         </div>
     </div>
    
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-select@3.0.0"></script>
     <script src="db.js"></script>
-    <script src="imagenes.js"></script>
-    <script src="categorias.js"></script>
-    <script src="productos.js"></script>
-    <script src="clientes.js"></script>
+    <script src="autores.js"></script>
+    <script src="libros.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
