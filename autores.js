@@ -68,8 +68,8 @@ Vue.component('componente-autores', {
     template: `
         <div class="row">
             <div class="col col-md-6">
-                <div class="card text-bg-dark">
-                    <div class="card-header">REGISTRO DE AUTORES</div>
+                <div class="card">
+                    <div class="card-header text-bg-dark">REGISTRO DE AUTORES</div>
                     <div class="catd-body">
                         <div class="row p-1">
                             <div class="col col-md-2">CODIGO</div>
@@ -104,7 +104,7 @@ Vue.component('componente-autores', {
                     </div>
                 </div>
             </div>
-            <div class="col col-md-6">
+            <div class="col col-md-5">
                 <div class="card text-bg-dark">
                     <div class="card-header">LISTADO DE AUTORES</div>
                     <div class="card-body">
