@@ -25,41 +25,28 @@ Vue.component('componente-productos', {
         buscarProducto(e){
             this.listar();
         },
-        eliminarProducto(idProducto){
+        async eliminarProducto(idProducto){
             if( confirm(`Esta seguro de elimina el producto?`) ){
-                let store = abrirStore('productos', 'readwrite'),
-                query = store.delete(idProducto);
-            query.onsuccess = e=>{
+                await db.productos.where("idProducto").equals(idProducto).delete();
                 this.nuevoProducto();
                 this.listar();
-            };
-            }
+            }i
         },
         modificarProducto(producto){
             this.accion = 'modificar';
             this.producto = producto;
         },
-        guardarProducto(){
+        async guardarProducto(){
             //almacenamiento del objeto productos en indexedDB
             if( this.producto.categoria.id=='' ||
                 this.producto.categoria.label=='' ){
                 console.error("Por favor seleccione una categoria");
                 return;
             }
-            let store = abrirStore('productos', 'readwrite'),
-                query = store.put({...this.producto});
-            query.onsuccess = e=>{
-                this.nuevoProducto();
-                this.listar();
-            };
-            query.onerror = e=>{
-                console.error('Error al guardar en productos', e);
-                if( e.target.error.message.includes('uniqueness') ){
-                    alertify.error(`Error al guardar en productos, codigo ${this.producto.codigo} ya existe`);
-                    return;
-                }
-                alertify.error(`Error al guardar en productos, ${e.target.error.message}`);
-            };
+
+            let collections = await db.productos.bulkPut([{...this.producto}]);
+            this.nuevoProducto();
+            this.listar();
         },
         nuevoProducto(){
             this.accion = 'nuevo';
@@ -76,26 +63,13 @@ Vue.component('componente-productos', {
                 precio:0.0
             }
         },
-        listar(){
-            let storeCat = abrirStore('categorias', 'readonly'),
-                dataCat = storeCat.getAll();
-            dataCat.onsuccess = resp=>{
-                this.categorias = dataCat.result.map(categoria=>{
-                    return {
-                        id: categoria.idCategoria,
-                        label:categoria.nombre
-                    }
-                });
-            };
-            let store = abrirStore('productos', 'readonly'),
-                data = store.getAll();
-            data.onsuccess = resp=>{
-                this.productos = data.result
-                    .filter(producto=>producto.codigo.includes(this.valor) || 
-                    producto.nombre.toLowerCase().includes(this.valor.toLowerCase()) || 
-                    producto.marca.toLowerCase().includes(this.valor.toLowerCase()) || 
-                    producto.presentacion.toLowerCase().includes(this.valor.toLowerCase()));
-            };
+        async listar(){
+            let collections = db.productos.orderBy('codigo')
+            .filter(producto=>producto.codigo.includes(this.valor) ||
+            producto.nombre.toLowerCase().includes(this.valor.toLowerCase()) ||
+            producto.marca.toLowerCase().includes(this.valor.toLowerCase()) ||
+            producto.presentacion.toLowerCase().includes(this.valor.toLowerCase()));
+            this.productos = await collections.toArray();
         }
     },
     template: `

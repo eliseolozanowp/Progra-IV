@@ -15,31 +15,23 @@ Vue.component('componente-categorias', {
         buscarCategoria(e){
             this.listar();
         },
-        eliminarCategoria(idCategoria){
+        async eliminarCategoria(idCategoria){
             if( confirm(`Esta seguro de elimina el categoria?`) ){
-                let store = abrirStore('categorias', 'readwrite'),
-                query = store.delete(idCategoria);
-            query.onsuccess = e=>{
+                await db.categorias.where("idCategoria").equals(idCategoria).delete();
                 this.nuevoCategoria();
                 this.listar();
-            };
             }
         },
         modificarCategoria(categoria){
             this.accion = 'modificar';
             this.categoria = categoria;
         },
-        guardarCategoria(){
-            //almacenamiento del objeto categorias en indexedDB
-            let store = abrirStore('categorias', 'readwrite'),
-                query = store.put({...this.categoria});
-            query.onsuccess = e=>{
-                this.nuevoCategoria();
-                this.listar();
-            };
-            query.onerror = e=>{
-                console.error('Error al guardar en categorias', e.message());
-            };
+        async guardarCategoria(){
+            //almacenamiento del objeto categorias en 
+            let collections = await db.categorias.bulkPut([{...this.categoria}]);
+            this.nuevoCategoria();
+            this.listar();
+
         },
         nuevoCategoria(){
             this.accion = 'nuevo';
@@ -49,14 +41,11 @@ Vue.component('componente-categorias', {
                 nombre:'',
             }
         },
-        listar(){
-            let store = abrirStore('categorias', 'readonly'),
-                data = store.getAll();
-            data.onsuccess = resp=>{
-                this.categorias = data.result
-                    .filter(categoria=>categoria.codigo.includes(this.valor) || 
-                    categoria.nombre.toLowerCase().includes(this.valor.toLowerCase()));
-            };
+        async listar(){
+            let collections = db.categorias.orderBy('codigo')
+            .filter(categoria=>categoria.codigo.includes(this.valor) ||
+                categoria.nombre.toLowerCase().includes(this.valor.toLowerCase()));
+            this.categorias = await collections.toArray();
         }
     },
     template: `

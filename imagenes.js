@@ -6,7 +6,7 @@ const img=(archivo, calidad)=>{
             $canvas.width = imagen.width;
             $canvas.height = imagen.height;
 
-            $canvas.getContext("2d").drawImage(imagen,0,0,$canvas.width. $canvas.height);
+            $canvas.getContext("2d").drawImage(imagen,0,0,$canvas.width,$canvas.height);
             $canvas.toBlob(blob=>{
                 if(blob==null) return reject(blob);
                 resolve(blob);
