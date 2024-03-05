@@ -30,7 +30,7 @@ Vue.component('componente-productos', {
                 await db.productos.where("idProducto").equals(idProducto).delete();
                 this.nuevoProducto();
                 this.listar();
-            }i
+            }
         },
         modificarProducto(producto){
             this.accion = 'modificar';
@@ -43,10 +43,18 @@ Vue.component('componente-productos', {
                 console.error("Por favor seleccione una categoria");
                 return;
             }
-
-            let collections = await db.productos.bulkPut([{...this.producto}]);
+            await db.productos.bulkPut([{...this.producto}]);
             this.nuevoProducto();
             this.listar();
+            
+            /*query.onerror = e=>{
+                console.error('Error al guardar en productos', e);
+                if( e.target.error.message.includes('uniqueness') ){
+                    alertify.error(`Error al guardar en productos, codigo ${this.producto.codigo} ya existe`);
+                    return;
+                }
+                alertify.error(`Error al guardar en productos, ${e.target.error.message}`);
+            };*/
         },
         nuevoProducto(){
             this.accion = 'nuevo';
@@ -64,12 +72,21 @@ Vue.component('componente-productos', {
             }
         },
         async listar(){
-            let collections = db.productos.orderBy('codigo')
-            .filter(producto=>producto.codigo.includes(this.valor) ||
-            producto.nombre.toLowerCase().includes(this.valor.toLowerCase()) ||
-            producto.marca.toLowerCase().includes(this.valor.toLowerCase()) ||
-            producto.presentacion.toLowerCase().includes(this.valor.toLowerCase()));
-            this.productos = await collections.toArray();
+            let collections = db.categorias.orderBy('nombre');
+            this.categorias = await collections.toArray();
+            this.categorias = this.categorias.map(categoria=>{
+                return {
+                    id: categoria.idCategoria,
+                    label:categoria.nombre
+                }
+            })
+            let collection = db.productos.orderBy('codigo').filter(
+                producto=>producto.codigo.includes(this.valor) || 
+                    producto.nombre.toLowerCase().includes(this.valor.toLowerCase()) || 
+                    producto.marca.toLowerCase().includes(this.valor.toLowerCase()) || 
+                    producto.presentacion.toLowerCase().includes(this.valor.toLowerCase())
+            );
+            this.productos = await collection.toArray();
         }
     },
     template: `
