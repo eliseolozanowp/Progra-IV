@@ -4,5 +4,5 @@ const http = require('http'),
         res.end('Hola Mundo');
     });
 server.listen(3000, res=>{
-    Console.log("Server ejecutandose en puerto 3000");
+    console.log("Server ejecutandose en puerto 3000");
 });
