@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petición a nodejs</title>
+</head>
+<body>
+    <form id="frmSaludo">
+        <label for="txtNombre">Nombre: </label>
+        <input type="text" name="txtNombre" id="txtNombre" required placeholder="nombre">
+        <input type="submit" value="Saludo">
+    </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", e=>{
+            frmSaludo.addEventListener("submit", event=>{
+                event.preventDefault();
+                let nombre = txtNombre.value;
+                fetch('http://localhost:3000?nombre='+ nombre)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        console.log(resp);
+                    });
+
+            });
+        });
+    </script>
+    
+</body>
+</html>
