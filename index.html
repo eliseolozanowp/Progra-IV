@@ -18,14 +18,12 @@
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <a class="nav-link" @click="abrirFormulario('autor')">Autor</a>
-                        <a class="nav-link" @click="abrirFormulario('libro')">Libro</a>
                     </div>
                 </div>
             </div>
         </nav>
         <div id="appSistema">
             <componente-autores ref="autor" v-show="forms['autor'].mostrar"></componente-autores>
-            <componente-libros ref="libro" v-show="forms['libro'].mostrar"></componente-libros>
         </div>
     </div>
    
